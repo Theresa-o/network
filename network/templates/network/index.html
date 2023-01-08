@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-                <div class="col-5">
+                <div class="col-5 middle-sidebar">
                     <div class="main-page-header mt-3 sticky-top">Home</div>
                     <div class="main-page-input">
                         <!-- <form class="d-flex flex-column"> -->
@@ -54,11 +54,12 @@
                                     <div class="tweet-content">
                                         <div class="tweet-created-content">{{post.caption}}</div>
                                     </div>
+                                    <span id="likeCount"></span>
                                     <div class="engagement-icons">
                                         <ul class="engagement-icons-ul mt-1">
                                             <li><i class="fa-regular fa-comment"></i></li>
                                             <li><i class="fa-solid fa-retweet"></i></li>
-                                            <li><i class="fa-regular fa-heart"></i></li>
+                                            <li><i id="LikeBtn" class="fa-regular fa-heart"></i></li>
                                             <li><i class="fa-solid fa-arrow-up-from-bracket"></i></li>
                                         </ul>
                                     </div>
