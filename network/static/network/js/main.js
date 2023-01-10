@@ -2,19 +2,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const likeIcon = document.querySelector("#likeBtn")
     likeIcon.addEventListener("click", handleLike)
 
-    const likeButton = (event) => {
-        id = parseInt(event.target.parentElement.dataset.id)
-        let likes = document.querySelector("#likeCount")
-        num = parseInt(likes.innerText)
-        num += 1
-        likes.innerText = num
+    function handleLike(event) {
+        //save the parent element in id
+        let id = parseInt(event.target.parentElement.dataset.id)
+        let likes = parseInt(event.target.previousElementSibling.innerText)
 
         fetch(`/updatelike/${id}`, {
             method: "POST",
-            headers: {
-                "Accept": 'application/json',
-                "Content-Type": 'application/json'
-            }
         })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.likes <= 1) {
+                    document.querySelector('#likeCount').innerHTML = `${likes + 1} like`
+                }
+                else {
+                    document.querySelector('#likeCount').innerHTML = `${likes + 1} likes`
+                }
+
+            })
     }
 })

@@ -68,9 +68,11 @@ html {
 }
 
 /* --------------------------------MAIN PAGE------ */
-/* .middle-sidebar {
-    margin-right: 550px;
-} */
+.middle-sidebar {
+    display: flex;
+    justify-content: center;
+    margin-right: -550px;
+}
 
 .main-page-header {
     font-size: 18px;

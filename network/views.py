@@ -5,8 +5,9 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
-from .models import User, NewTweet, Profile, Followers
+from .models import User, NewTweet, Profile, Followers, LikesPost
 
 
 def index(request):
@@ -120,5 +121,22 @@ def follow(request):
 
 
     else:
+        return HttpResponseRedirect(reverse("index"))
+
+def update_like(request):
+    username = request.user
+    post_id = request.GET.get('post_id')
+    post = NewTweet.objects.get(id = post_id)
+
+    like_filter = LikesPost.objects.filter(post_id=post_id, username=username).first()
+
+    if like_filter == None:
+        new_like = LikesPost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        post.save()
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        like_filter.delete()
+        post.save()
         return HttpResponseRedirect(reverse("index"))
     

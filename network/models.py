@@ -29,3 +29,10 @@ class Followers(models.Model):
 
     def __str__(self):
         return self.user
+
+class LikesPost(models.Model):
+    post_id = models.CharField(max_length=100)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.username
