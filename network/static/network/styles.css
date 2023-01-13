@@ -301,6 +301,11 @@ tweet-author-username:focus {
     align-items: center;
 }
 
+.about span {
+    margin: 0 10px;
+    padding: 0 10px;
+}
+
 
 /* .header_headerimg {
     width: 100%;

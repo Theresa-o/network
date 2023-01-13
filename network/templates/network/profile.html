@@ -20,7 +20,11 @@
                 <input type="hidden" value="{{user_object.username}}" name="user">
                 <!-- current users cannot follow themselves -->
                 {% if profile_user != request.user %}
-                    <button type="submit" class="btn btn-primary rounded-pill my-1 mx-1 py-1 py-1">{{ button_text }}</button>
+                    {% if not following %}
+                        <button type="submit" class="btn btn-primary rounded-pill my-1 mx-1 py-1 py-1">Follow</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary rounded-pill my-1 mx-1 py-1 py-1">Unfollow</button>
+                    {% endif %}
                 {% else %}
                     <a href="{% url 'logout' %}">Log Out</a>
                 {% endif %}

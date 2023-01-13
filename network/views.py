@@ -86,20 +86,20 @@ def profile(request, user_id):
     # user_profile = Profile.objects.get(user=user_object)
     profile_post = NewTweet.objects.filter(user = user_id)
     post_count = len(profile_post)
-    follower = request.user.username
+    follower = request.user
     # user = profile_user
     # if Followers.objects.filter(follower=follower, user=user).first():
 
-    if Followers.objects.filter(follower=follower, user=profile_user).first():
-        button_text = "Unfollow"
+    if request.user.is_authenticated:
+        following = Followers.objects.filter(follower=follower, user=profile_user).exists()
     else:
-        button_text = "Follow"
+        following = False
 
     context = {
         "profile_user": profile_user,
         "post_count": post_count,
         "profile_post": profile_post,
-        "button_text": button_text,
+        "following": following,
     }
 
     return render(request, "network/profile.html", context)
@@ -108,7 +108,7 @@ def profile(request, user_id):
 def follow(request):
     if request.method == 'POST':
         follower = request.POST['follower']
-        user = request.POST['user']
+        user = request.user
 
         if Followers.objects.filter(follower=follower, user=user).first():
             delete_follower = Followers.objects.get(follower=follower, user=user)
@@ -127,6 +127,7 @@ def update_like(request):
     username = request.user
     post_id = request.GET.get('post_id')
     post = NewTweet.objects.get(id = post_id)
+    all_post = NewTweet.objects.all()
 
     like_filter = LikesPost.objects.filter(post_id=post_id, username=username).first()
 
@@ -134,9 +135,28 @@ def update_like(request):
         new_like = LikesPost.objects.create(post_id=post_id, username=username)
         new_like.save()
         post.save()
-        return HttpResponseRedirect(reverse("index"))
+        likes_post = True
+        like_count = LikesPost.objects.filter(post_id=post_id, username=username).count()
+        context = {
+            "all_post": all_post, 
+            'likes': like_count, 
+            "likesPost": likes_post
+        }
+        return render(request, "network/index.html", context)
+        # return render(request, 'network/index.html', {'likes': like_count, "likesPost": likes_post})
+        # return JsonResponse({"likes": like_count, "likesPost": likes_post})
+
     else:
         like_filter.delete()
         post.save()
-        return HttpResponseRedirect(reverse("index"))
+        likes_post = False
+        like_count = LikesPost.objects.filter(post_id=post_id, username=username).count()
+        context = {
+            "all_post": all_post, 
+            'likes': like_count, 
+            "likesPost": likes_post
+        }
+        return render(request, "network/index.html", context)
+        # return JsonResponse({"likes": like_count, "likesPost": likes_post})
+        # return render(request, 'network/index.html', {'likes': like_count, "likesPost": likes_post})
     

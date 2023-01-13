@@ -78,7 +78,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-
+                                    <a class="nav-link" href="{% url 'profile' user.id %}">
+                                        <img src= {% static 'network/images/profile.svg' %} alt="Profile" class="left-sidebar-menu-icon">
+                                        Profile
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">

@@ -54,12 +54,29 @@
                                     <div class="tweet-content">
                                         <div class="tweet-created-content">{{post.caption}}</div>
                                     </div>
-                                    <span id="likeCount"></span>
+                                    
+                                    <!-- <span id="likeCount"></span> -->
+                                    <div id="likeCount">{{ likes }} likes</div>
                                     <div class="engagement-icons">
                                         <ul class="engagement-icons-ul mt-1">
                                             <li><i class="fa-regular fa-comment"></i></li>
                                             <li><i class="fa-solid fa-retweet"></i></li>
-                                            <li><a href="/update_like?post_id={{post.id}}"><i id="LikeBtn" class="fa-regular fa-heart"></i></a></li>
+                                            <!-- <form id="likeform" data-id="{{ post.id }}" method="GET" action="{% url 'update_like' %}">
+                                                <button id="likeBtn" type="submit" class="like-button">
+                                                    <i class="fa-solid fa-heart"></i>
+                                                    <span id="likeCount">{{ post.likespost_set.count }} likes</span>
+                                                </button>
+                                            </form> -->
+                                            <li>
+                                                <a href="/update_like?post_id={{post.id}}">
+                                                    {% if likesPost %}
+                                                        <i id="like-button" class="likeicon fa-heart fas"></i>
+                                                    {% else %}
+                                                        <i id="like-button" class="likeicon fa-heart far"></i>
+                                                    {% endif %}
+                                                    <!-- <i id="likeBtn" class="fa-regular fa-heart like-button"></i> -->
+                                                </a>
+                                            </li>
                                             <li><i class="fa-solid fa-arrow-up-from-bracket"></i></li>
                                         </ul>
                                     </div>
