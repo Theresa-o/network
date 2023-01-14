@@ -90,16 +90,16 @@ def profile(request, user_id):
     # user = profile_user
     # if Followers.objects.filter(follower=follower, user=user).first():
 
-    if request.user.is_authenticated:
-        following = Followers.objects.filter(follower=follower, user=profile_user).exists()
-    else:
-        following = False
+    # if request.user.is_authenticated:
+    #     following = Followers.objects.filter(follower=follower, user=profile_user).exists()
+    # else:
+    #     following = False
 
     context = {
         "profile_user": profile_user,
         "post_count": post_count,
         "profile_post": profile_post,
-        "following": following,
+        # "following": following,
     }
 
     return render(request, "network/profile.html", context)
@@ -113,11 +113,26 @@ def follow(request):
         if Followers.objects.filter(follower=follower, user=user).first():
             delete_follower = Followers.objects.get(follower=follower, user=user)
             delete_follower.delete()
-            return HttpResponseRedirect(reverse("follow"))
+            # delete_follower.save()
+            following = False
+            context = {
+                "following": following,
+                "profile_user": user,
+            }
+
+            return render(request, "network/profile.html", context)
+            # return HttpResponseRedirect(reverse("follow"))
         else:
             new_follower = Followers.objects.create(follower=follower, user=user)
             new_follower.save()
-            return HttpResponseRedirect(reverse("follow"))
+            following = True
+            context = {
+                "following": following,
+                "profile_user": user,
+            }
+
+            return render(request, "network/profile.html", context)
+            # return HttpResponseRedirect(reverse("follow"))
 
 
     else:

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const likeIcon = document.querySelector("#likeBtn")
+    const likeIcon = document.querySelector("#like-button")
     likeIcon.addEventListener("click", handleLike)
 
     function handleLike(event) {
@@ -26,17 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 else {
                     event.target.previousElementSibling.innerHTML = `${likes} likes`
                 }
-
-                // Updates like icon correctly according to whether user likes post or not
-                if (likesPost) {
-                    likeButton.className = 'likeicon fa-heart fas';
-                } else {
-                    likeButton.className = 'likeicon fa-heart far';
-                }
             })
         // .then((data) => {
         //     document.querySelector('#likeCount').innerHTML = `${data.likes} ${data.likes <= 1 ? "like" : "likes"}`
         // })
+        // event.target.previousElementSibling.innerHTML = `${likes} ${likes <= 1 ? "like" : "likes"}`;
+
     }
 })
 
