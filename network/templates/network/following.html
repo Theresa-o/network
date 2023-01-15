@@ -1,0 +1,64 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    
+    <div class="container">
+
+        <div class="row justify-content-center">
+            
+            <div class="col-12 col-lg-8 mt-0 mt-sm-3 bg-white">
+                
+                <h3 class="pt-4 pb-3 text-center">Your follower's posts</h3>
+                
+                    <div class="tweet-feed">
+                        {% for post in following_post %}
+                            <div class="tweet">
+                                <img src="http://placeimg.com/140/140/people" alt="author profile picture" class="tweet-author-image"/>
+                                <div class="tweet-feed-content">
+                                    <div class="tweet-header">
+                                        <a href="{% url 'profile' user.id %}" class="tweet-author-username">{{post.user}}</a>
+                                        <div class="tweet-author-handle">@ {{post.user}</div>
+                                        <div class="tweet-dot">.</div>
+                                        <div class="tweeted-time">{{post.created_at}}</div>
+                                    </div>
+                                    <div class="tweet-content">
+                                        <div class="tweet-created-content">{{post.caption}}</div>
+                                    </div>
+                                    
+                                    <!-- <span id="likeCount"></span> -->
+                                    <div id="likeCount">{{ likes }} likes</div>
+                                    <div class="engagement-icons">
+                                        <ul class="engagement-icons-ul mt-1">
+                                            <li><i class="fa-regular fa-comment"></i></li>
+                                            <li><i class="fa-solid fa-retweet"></i></li>
+                                            <!-- <form id="likeform" data-id="{{ post.id }}" method="GET" action="{% url 'update_like' %}">
+                                                <button id="likeBtn" type="submit" class="like-button">
+                                                    <i class="fa-solid fa-heart"></i>
+                                                    <span id="likeCount">{{ post.likespost_set.count }} likes</span>
+                                                </button>
+                                            </form> -->
+                                            <li>
+                                                <a href="/update_like?post_id={{post.id}}" >
+                                                    {% if likesPost %}
+                                                        <i id="like-button" class="likeicon fa-heart fas"></i>
+                                                    {% else %}
+                                                        <i id="like-button" class="likeicon fa-heart far"></i>
+                                                    {% endif %}
+                                                    <!-- <i id="likeBtn" class="fa-regular fa-heart like-button"></i> -->
+                                                </a>
+                                            </li>
+                                            <li><i class="fa-solid fa-arrow-up-from-bracket"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+            </div>
+        </div>
+
+    </div>
+    
+
+{% endblock %}

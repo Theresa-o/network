@@ -13,6 +13,10 @@ class NewTweet(models.Model):
     def __str__(self):
         return f"{self.user} posted {self.caption}"
 
+    class Meta: 
+        # Orders posts by most recent first, by default
+        ordering = ['-created_at']
+
 class Followers(models.Model):
     follower = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

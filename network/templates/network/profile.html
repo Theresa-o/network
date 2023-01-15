@@ -30,8 +30,12 @@
                 {% endif %}
             </form>
           <ul class="about">
-            <li><span>4,073</span>Followers</li>
-            <li><span>322</span>Following</li>
+            {% if following_user <= 1 %}
+                <li><span>{{following_user}}</span>Follower</li>
+            {% else %}
+                <li><span>{{following_user}}</span>Followers</li>
+            {% endif %}
+            <li><span>{{followers_user}}</span>Following</li>
             {% if post_count <= 1 %}
                 <li><span>{{post_count}}</span>Post</li>
             {% elif post_count >= 2 %}

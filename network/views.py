@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from itertools import chain
 
 from .models import User, NewTweet, Profile, Followers, LikesPost
 
@@ -87,7 +88,7 @@ def profile(request, user_id):
     profile_post = NewTweet.objects.filter(user = user_id)
     post_count = len(profile_post)
     follower = request.user
-    # user = profile_user
+    user = user_id
     # if Followers.objects.filter(follower=follower, user=user).first():
 
     # if request.user.is_authenticated:
@@ -95,10 +96,15 @@ def profile(request, user_id):
     # else:
     #     following = False
 
+    followers_user = len(Followers.objects.filter(user=user_id))
+    following_user = len(Followers.objects.filter(follower=user_id))
+
     context = {
         "profile_user": profile_user,
         "post_count": post_count,
         "profile_post": profile_post,
+        "followers_user": followers_user,
+        "following_user": following_user,
         # "following": following,
     }
 
@@ -174,4 +180,24 @@ def update_like(request):
         return render(request, "network/index.html", context)
         # return JsonResponse({"likes": like_count, "likesPost": likes_post})
         # return render(request, 'network/index.html', {'likes': like_count, "likesPost": likes_post})
+
+def following_feed(request):
+    user_following_list = []
+    user_following_feed = []
+
+    user_following = Followers.objects.filter(follower=request.user)
+
+    for users in user_following:
+        user_following_list.append(users.user)
+
+    for users in user_following_list:
+        feed_lists = NewTweet.objects.filter(user=users)
+        user_following_feed.append(feed_lists)
+
+    feed_list = list(chain(*user_following_feed))
+    
+    context = {
+        "following_post": feed_list,
+    }
+    return render(request, "network/following.html", context)
     

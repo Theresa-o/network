@@ -295,13 +295,11 @@ tweet-author-username:focus {
 
 .about {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     align-items: center;
 }
 
-.about span {
+.about li {
     margin: 0 10px;
     padding: 0 10px;
 }
