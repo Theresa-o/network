@@ -46,7 +46,7 @@
                                 <img src="http://placeimg.com/140/140/people" alt="author profile picture" class="tweet-author-image"/>
                                 <div class="tweet-feed-content">
                                     <div class="tweet-header">
-                                        <a href="#" class="tweet-author-username">{{post.user}}</a>
+                                        <a href="{% url 'profile' user.id %}" class="tweet-author-username">{{post.user}}</a>
                                         <div class="tweet-author-handle">@ {{post.user}</div>
                                         <div class="tweet-dot">.</div>
                                         <div class="tweeted-time">{{post.created_at}}</div>
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
+                    {% endfor %}
                             <div class="tweet">
                                 <img src="http://placeimg.com/140/140/people" alt="author profile picture" class="tweet-author-image"/>
                                 <div class="tweet-feed-content">
