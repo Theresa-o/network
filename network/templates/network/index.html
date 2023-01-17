@@ -41,7 +41,7 @@
                     <!-- </form> -->
                     </div>
                     <div class="tweet-feed">
-                        {% for post in all_post %}
+                        {% for post in paginated_posts %}
                             <div class="tweet">
                                 <img src="http://placeimg.com/140/140/people" alt="author profile picture" class="tweet-author-image"/>
                                 <div class="tweet-feed-content">
@@ -130,4 +130,17 @@
                         </div>
                     </div>
                 </div>
+                <br><br>
+                {{ paginated_posts }}
+                <!-- Setting pagination -->
+                {% if paginated_posts.has_previous %}
+                    <a href="?page=1">Current</a>
+                    <a href="?page={{ paginated_posts.previous_page_number}}">Previous</a>
+                {% endif %}
+
+                {% if paginated_posts.has_next %}
+                    <a href="?page={{ paginated_posts.next_page_number}}">Next</a>
+                    <a href="?page={{ paginated_posts.paginator.num.pages}}">Last</a>
+                {% endif %}
+
 {% endblock %}

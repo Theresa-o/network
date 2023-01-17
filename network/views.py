@@ -7,14 +7,20 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from itertools import chain
+from django.core.paginator import Paginator
 
 from .models import User, NewTweet, Profile, Followers, LikesPost
 
 
 def index(request):
     all_post = NewTweet.objects.all()
+    pagination = Paginator(NewTweet.objects.all(), 3)
+    page = request.GET.get('page')
+    paginated_posts = pagination.get_page(page)
+
     context = {
         "all_post": all_post,
+        "paginated_posts": paginated_posts,
     }
     return render(request, "network/index.html", context)
 
