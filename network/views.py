@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+# from django.shortcuts import redirect
+# from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -17,10 +18,12 @@ def index(request):
     pagination = Paginator(NewTweet.objects.all(), 3)
     page = request.GET.get('page')
     paginated_posts = pagination.get_page(page)
+    num_page = "a" * paginated_posts.paginator.num_pages
 
     context = {
         "all_post": all_post,
         "paginated_posts": paginated_posts,
+        "num_page": num_page,
     }
     return render(request, "network/index.html", context)
 
@@ -105,6 +108,53 @@ def profile(request, user_id):
     followers_user = len(Followers.objects.filter(user=user_id))
     following_user = len(Followers.objects.filter(follower=user_id))
 
+    if request.method == 'POST':
+        follower = request.POST['follower']
+        user = request.user
+
+        if Followers.objects.filter(follower=follower, user=user).first():
+            delete_follower = Followers.objects.get(follower=follower, user=user)
+            delete_follower.delete()
+            # delete_follower.save()
+            following = False
+            context = {
+                "profile_user": profile_user,
+                "post_count": post_count,
+                "profile_post": profile_post,
+                "followers_user": followers_user,
+                "following_user": following_user,
+                "following": following,
+            }
+
+            return render(request, "network/profile.html", context)
+            # context = {
+            #     "following": following,
+            #     "profile_user": user,
+            # }
+
+            # return render(request, "network/profile.html", context)
+            # return HttpResponseRedirect(reverse("follow"))
+        else:
+            new_follower = Followers.objects.create(follower=follower, user=user)
+            new_follower.save()
+            following = True
+            context = {
+                "profile_user": profile_user,
+                "post_count": post_count,
+                "profile_post": profile_post,
+                "followers_user": followers_user,
+                "following_user": following_user,
+                "following": following,
+            }
+
+            return render(request, "network/profile.html", context)
+            # context = {
+            #     "following": following,
+            #     "profile_user": user,
+            # }
+
+            # return render(request, "network/profile.html", context)
+
     context = {
         "profile_user": profile_user,
         "post_count": post_count,
@@ -117,38 +167,38 @@ def profile(request, user_id):
     return render(request, "network/profile.html", context)
 
 # @login_required(login_url='login')
-def follow(request):
-    if request.method == 'POST':
-        follower = request.POST['follower']
-        user = request.user
+# def follow(request):
+#     if request.method == 'POST':
+#         follower = request.POST['follower']
+#         user = request.user
 
-        if Followers.objects.filter(follower=follower, user=user).first():
-            delete_follower = Followers.objects.get(follower=follower, user=user)
-            delete_follower.delete()
-            # delete_follower.save()
-            following = False
-            context = {
-                "following": following,
-                "profile_user": user,
-            }
+#         if Followers.objects.filter(follower=follower, user=user).first():
+#             delete_follower = Followers.objects.get(follower=follower, user=user)
+#             delete_follower.delete()
+#             # delete_follower.save()
+#             following = False
+#             context = {
+#                 "following": following,
+#                 "profile_user": user,
+#             }
 
-            return render(request, "network/profile.html", context)
+#             return render(request, "network/profile.html", context)
+#             # return HttpResponseRedirect(reverse("follow"))
+#         else:
+#             new_follower = Followers.objects.create(follower=follower, user=user)
+#             new_follower.save()
+#             following = True
+#             context = {
+#                 "following": following,
+#                 "profile_user": user,
+#             }
+
+#             return render(request, "network/profile.html", context)
             # return HttpResponseRedirect(reverse("follow"))
-        else:
-            new_follower = Followers.objects.create(follower=follower, user=user)
-            new_follower.save()
-            following = True
-            context = {
-                "following": following,
-                "profile_user": user,
-            }
-
-            return render(request, "network/profile.html", context)
-            # return HttpResponseRedirect(reverse("follow"))
 
 
-    else:
-        return HttpResponseRedirect(reverse("index"))
+    # else:
+    #     return HttpResponseRedirect(reverse("index"))
 
 def update_like(request):
     username = request.user
@@ -206,4 +256,17 @@ def following_feed(request):
         "following_post": feed_list,
     }
     return render(request, "network/following.html", context)
-    
+
+def edit_post(request, post_id):
+    post = NewTweet.objects.get(pk=post_id)
+    if request.method == "POST":
+        caption = request.POST["caption"]
+        post.caption = caption
+        post.save()
+        return redirect("network/index")
+        # return HttpResponseRedirect(reverse("index"))
+
+    context = {
+        "post": post,
+    }
+    return render(request, "network/edit_post.html", context)

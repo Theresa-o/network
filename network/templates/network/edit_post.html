@@ -1,0 +1,16 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    
+<div class="col-10 d-flex justify-content-center">
+    <div class="main-page-input-box">
+        <form method="POST" action="/edit_post/{{post.id}}/">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div>
+                <textarea name="caption" id="tweet-box" class="form-control main-page-tweet-box text-wrap" cols="30" rows="10">{{ post.caption }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary rounded-pill px-4 main-page-tweet-button"><strong>Edit</strong></button>
+        </form>
+    </div>  
+{% endblock %}

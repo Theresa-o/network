@@ -75,15 +75,25 @@ html {
 }
 
 .main-page-header {
+    margin-top: 650px;
+    margin-left: 220px;
     font-size: 18px;
     height: 48px;
     font-weight: 700;
     font-family: 'Open Sans', sans-serif;
 }
 
+.top-input-sidebar {
+    display: flex;
+    justify-content: center;
+    margin-right: -350px;
+    margin-bottom: 20px;
+}
+
 .main-page-header-profile-picture {
     border-radius: 50%;
     height: 48px;
+    margin-right: 20px;
 }
 
 .main-page-input {
@@ -96,9 +106,9 @@ html {
 }
 
 .main-page-tweet-box {
-    margin-top: -5px;
+    /* margin-top: -5px;
     word-wrap: break-word;
-    word-break: break-all;
+    word-break: break-all; */
     outline: none;
 
 }
@@ -177,6 +187,11 @@ main-page-input-privacy-text {
     filter: invert(52%) sepia(50%) saturate(2964%) hue-rotate(179deg) brightness(95%) contrast(97%);
 
 } */
+
+.tweet-feed {
+    margin-top: 300px;
+    /* margin-bottom: 15px; */
+}
 
 .tweetbox__input img {
     border-radius: 50%;

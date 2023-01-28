@@ -5,11 +5,11 @@
                     <div class="main-page-header mt-3 sticky-top">Home</div>
                     <div class="main-page-input">
                         <!-- <form class="d-flex flex-column"> -->
-                            <div class="row">
-                                <div class="col-2 main-page-header-profile-picture">
+                            <div class="top-input-sidebar">
+                                <div class="main-page-header-profile-picture">
                                     <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" class="main-page-header-profile-picture" alt="profile-picture"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="hi">
                                     <div class="main-page-input-box">
                                         <form method="POST" action="new_post">
                                         {% csrf_token %}
@@ -35,8 +35,7 @@
                                                 <button type="submit" class="btn btn-primary rounded-pill px-4 main-page-tweet-button"><strong>Tweet</strong></button>
                                             </div>
                                         </form>
-                                    
-                                </div>
+                                    </div>
                             </div>
                     <!-- </form> -->
                     </div>
@@ -77,7 +76,12 @@
                                                     <!-- <i id="likeBtn" class="fa-regular fa-heart like-button"></i> -->
                                                 </a>
                                             </li>
-                                            <li><i class="fa-solid fa-arrow-up-from-bracket"></i></li>
+                                            <li>
+                                                <a href='{% url "edit_post" post.id %}'>
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </a>
+                                            </li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -130,31 +134,22 @@
                         </div>
                     </div>
                 </div>
-                <br><br>
 
+                <!-- Create a pagination nav -->
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             {% if paginated_posts.has_previous %}
                 <li class="page-item"><a class="page-link" href="?page={{ paginated_posts.previous_page_number}}">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                <!-- <li class="page-item"><a class="page-link" href="?page=1">1</a></li> -->
             {% endif %}
+            {% for i in num_page %}
+                <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+            {% endfor %}
 
             {% if paginated_posts.has_next %}
                 <li class="page-item"><a class="page-link" href="?page={{ paginated_posts.next_page_number}}">Next</a></li>
             {% endif %}
         </ul>
     </nav>
-
-                {{ paginated_posts }}
-                <!-- Setting pagination -->
-                {% if paginated_posts.has_previous %}
-                    <a href="?page=1">Current</a>
-                    <a href="?page={{ paginated_posts.previous_page_number}}">Previous</a>
-                {% endif %}
-
-                {% if paginated_posts.has_next %}
-                    <a href="?page={{ paginated_posts.next_page_number}}">Next</a>
-                    <a href="?page={{ paginated_posts.paginator.num.pages}}">Last</a>
-                {% endif %}
 
 {% endblock %}
