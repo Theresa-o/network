@@ -105,61 +105,14 @@ def profile(request, user_id):
     # else:
     #     following = False
 
-    followers_user = len(Followers.objects.filter(user=user_id))
+    follower_user = len(Followers.objects.filter(followed_user=user_id))
     following_user = len(Followers.objects.filter(follower=user_id))
-
-    if request.method == 'POST':
-        follower = request.POST['follower']
-        user = request.user
-
-        if Followers.objects.filter(follower=follower, user=user).first():
-            delete_follower = Followers.objects.get(follower=follower, user=user)
-            delete_follower.delete()
-            # delete_follower.save()
-            following = False
-            context = {
-                "profile_user": profile_user,
-                "post_count": post_count,
-                "profile_post": profile_post,
-                "followers_user": followers_user,
-                "following_user": following_user,
-                "following": following,
-            }
-
-            return render(request, "network/profile.html", context)
-            # context = {
-            #     "following": following,
-            #     "profile_user": user,
-            # }
-
-            # return render(request, "network/profile.html", context)
-            # return HttpResponseRedirect(reverse("follow"))
-        else:
-            new_follower = Followers.objects.create(follower=follower, user=user)
-            new_follower.save()
-            following = True
-            context = {
-                "profile_user": profile_user,
-                "post_count": post_count,
-                "profile_post": profile_post,
-                "followers_user": followers_user,
-                "following_user": following_user,
-                "following": following,
-            }
-
-            return render(request, "network/profile.html", context)
-            # context = {
-            #     "following": following,
-            #     "profile_user": user,
-            # }
-
-            # return render(request, "network/profile.html", context)
 
     context = {
         "profile_user": profile_user,
         "post_count": post_count,
         "profile_post": profile_post,
-        "followers_user": followers_user,
+        "follower_user": follower_user,
         "following_user": following_user,
         # "following": following,
     }
@@ -167,38 +120,38 @@ def profile(request, user_id):
     return render(request, "network/profile.html", context)
 
 # @login_required(login_url='login')
-# def follow(request):
-#     if request.method == 'POST':
-#         follower = request.POST['follower']
-#         user = request.user
+def follow(request):
+    if request.method == 'POST':
+        follower = request.POST['follower']
+        followed_user = request.user
 
-#         if Followers.objects.filter(follower=follower, user=user).first():
-#             delete_follower = Followers.objects.get(follower=follower, user=user)
-#             delete_follower.delete()
-#             # delete_follower.save()
-#             following = False
-#             context = {
-#                 "following": following,
-#                 "profile_user": user,
-#             }
+        if Followers.objects.filter(follower=follower, followed_user=followed_user).first():
+            delete_follower = Followers.objects.get(follower=follower, followed_user=followed_user)
+            delete_follower.delete()
+            # delete_follower.save()
+            following = False
+            context = {
+                "following": following,
+                "profile_user": followed_user,
+            }
 
-#             return render(request, "network/profile.html", context)
-#             # return HttpResponseRedirect(reverse("follow"))
-#         else:
-#             new_follower = Followers.objects.create(follower=follower, user=user)
-#             new_follower.save()
-#             following = True
-#             context = {
-#                 "following": following,
-#                 "profile_user": user,
-#             }
+            return render(request, "network/profile.html", context)
+            # return HttpResponseRedirect(reverse("follow"))
+        else:
+            new_follower = Followers.objects.create(follower=follower, followed_user=followed_user)
+            new_follower.save()
+            following = True
+            context = {
+                "following": following,
+                "profile_user": followed_user,
+            }
 
-#             return render(request, "network/profile.html", context)
+            return render(request, "network/profile.html", context)
             # return HttpResponseRedirect(reverse("follow"))
 
 
-    # else:
-    #     return HttpResponseRedirect(reverse("index"))
+    else:
+        return HttpResponseRedirect(reverse("index"))
 
 def update_like(request):
     username = request.user

@@ -12,7 +12,7 @@
             <img src="http://placeimg.com/140/140/people" alt="User image" />
             <span></span>
           </div>
-            <form method="POST">
+            <form action="/follow" method="POST">
             <!-- <form action="/follow" method="POST"> -->
                 {% csrf_token %}
                 <h2>{{ profile_user }}</h2>
@@ -36,7 +36,7 @@
             {% else %}
                 <li><span>{{following_user}}</span>Followers</li>
             {% endif %}
-            <li><span>{{followers_user}}</span>Following</li>
+            <li><span>{{follower_user}}</span>Following</li>
             {% if post_count <= 1 %}
                 <li><span>{{post_count}}</span>Post</li>
             {% elif post_count >= 2 %}

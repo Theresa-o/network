@@ -22,9 +22,11 @@ class Followers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # follower = models.ForeignKey('User', on_delete=models.CASCADE, related_name='targets')
     # target = models.ForeignKey('User', on_delete=models.CASCADE, related_name='followers')
+    follower = models.ManyToManyField(User, blank=True, related_name="following_users")
+    followed_user = models.ManyToManyField(User, blank=True, related_name="followed_users")
 
     def __str__(self):
-        return self.user
+        return self.follower
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
